@@ -22,7 +22,7 @@ const Navbar = async ({ sideMenu }) => {
             <Link href="/hotels">Hotels</Link>
           </li>
           <li>
-            <Link href="#">Recommended Places</Link>
+            <Link href="/recommended">Recommended Places</Link>
           </li>
 
           <li>
