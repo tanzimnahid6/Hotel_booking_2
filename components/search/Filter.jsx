@@ -9,7 +9,7 @@ const Filter = () => {
       <div className="col-span-3 space-y-4">
         <SortHotel></SortHotel>
 
-        <FilterByRange></FilterByRange>
+        {/* <FilterByRange></FilterByRange> */}
 
         <FilterByCategory></FilterByCategory>
 

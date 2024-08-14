@@ -9,7 +9,14 @@ import {
   replaceMongoIdInObject,
 } from "@/utils/data-utils";
 
-export async function getAllHotels(destination, checkin, checkout, category) {
+export async function getAllHotels(
+  destination,
+  checkin,
+  checkout,
+  category,
+  sortBy,
+  amenity
+) {
   const regex = new RegExp(destination, "i");
   const hotelsByDestination = await hotelModel
     .find({ city: { $regex: regex } })
@@ -20,16 +27,26 @@ export async function getAllHotels(destination, checkin, checkout, category) {
       "lowRate",
       "city",
       "propertyCategory",
+      "amenities",
     ])
     .lean();
   let allHotels = hotelsByDestination;
+
   if (category) {
     const categoriesToMatch = category.split("|");
     allHotels = allHotels.filter((hotel) => {
       return categoriesToMatch.includes(hotel.propertyCategory.toString());
     });
   }
-  if (checkin && checkout) { 
+  if (amenity) {
+    const amenityToMatch = amenity.split("|");
+    // console.log(allHotels)
+    allHotels = allHotels.filter(hotel =>
+      amenityToMatch.every(amenity => hotel.amenities.includes(amenity))
+    );
+    
+  }
+  if (checkin && checkout) {
     allHotels = await Promise.all(
       allHotels.map(async (hotel) => {
         const found = await findBooking(hotel._id, checkin, checkout);
@@ -42,6 +59,23 @@ export async function getAllHotels(destination, checkin, checkout, category) {
         return hotel;
       })
     );
+  }
+
+  if (sortBy) {
+    let avgPrice = (lowRate, highRate) => {
+      return (highRate + lowRate) / 2;
+    };
+    if (sortBy == "lowToHigh") {
+      allHotels = allHotels.sort(
+        (h1, h2) =>
+          avgPrice(h1.lowRate, h1.highRate) - avgPrice(h2.lowRate, h2.highRate)
+      );
+    } else if (sortBy == "highToLow") {
+      allHotels = allHotels.sort(
+        (h1, h2) =>
+          avgPrice(h2.lowRate, h2.highRate) - avgPrice(h1.lowRate, h1.highRate)
+      );
+    }
   }
   return replaceMongoIdInArray(allHotels);
 }

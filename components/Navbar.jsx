@@ -18,7 +18,7 @@ const Navbar = async ({ sideMenu }) => {
 
       {sideMenu && (
         <ul>
-           <li>
+          <li>
             <Link href="/hotels">Hotels</Link>
           </li>
           <li>
@@ -26,11 +26,11 @@ const Navbar = async ({ sideMenu }) => {
           </li>
 
           <li>
-            <Link href="#">About Us</Link>
+            <Link href="/about">About Us</Link>
           </li>
 
           <li>
-            <Link href="#">Contact us</Link>
+            <Link href="/contact">Contact us</Link>
           </li>
 
           <li>
@@ -42,7 +42,7 @@ const Navbar = async ({ sideMenu }) => {
               <div>
                 <span>{session?.user?.name}</span>
                 <span> | </span>
-                <Logout ></Logout>
+                <Logout></Logout>
               </div>
             ) : (
               <Link href="/login" className="login">

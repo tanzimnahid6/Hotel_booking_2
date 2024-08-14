@@ -1,9 +1,11 @@
 import Search from "@/components/search/Search";
 import Filter from "@/components/search/Filter";
 import HotelList from "@/components/hotel/HotelList";
+import { Suspense } from "react";
+import Loading from "@/components/Ui/Loading";
 
 const HotelListPage = ({
-  searchParams: { destination, checkin, checkout, category },
+  searchParams: { destination, checkin, checkout, category, sortBy, amenity },
 }) => {
   const refinedCategory = (category) => {
     const decodedCategory = decodeURI(category);
@@ -28,12 +30,16 @@ const HotelListPage = ({
       <section className="py-12">
         <div className="container grid grid-cols-12">
           <Filter />
-          <HotelList
-            destination={destination}
-            checkin={checkin}
-            checkout={checkout}
-            category={refinedCategory(category)}
-          />
+          <Suspense fallback={<Loading></Loading>}>
+            <HotelList
+              destination={destination}
+              checkin={checkin}
+              checkout={checkout}
+              category={refinedCategory(category)}
+              sortBy={sortBy}
+              amenity={amenity}
+            />
+          </Suspense>
         </div>
       </section>
     </>

@@ -9,6 +9,7 @@ const FilterByCategory = () => {
   const pathName = usePathname();
   const { replace } = useRouter();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const params = new URLSearchParams(searchParams);
   const handleChange = (e) => {
     e.preventDefault();
@@ -22,14 +23,13 @@ const FilterByCategory = () => {
     }
   };
   useEffect(() => {
-    const category = params.get('category');
-
+    const category = params.get("category");
     if (category) {
       const decodedCategory = decodeURI(category);
-      const queryInCategory = decodedCategory.split('|');
+      const queryInCategory = decodedCategory.split("|");
       setQuery(queryInCategory);
     }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (query.length > 0) {
@@ -38,7 +38,7 @@ const FilterByCategory = () => {
       params.delete("category");
     }
     replace(`${pathName}?${params.toString()}`);
-  }, [query]);
+  }, [params, pathName, query, replace]);
 
   return (
     <div>
