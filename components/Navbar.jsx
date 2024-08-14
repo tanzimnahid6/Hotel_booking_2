@@ -9,7 +9,7 @@ const Navbar = async ({ sideMenu }) => {
     <nav>
       <Link href="/">
         <Image
-          src="/stayswift.svg"
+          src="/hotel.png"
           alt="Stay Swift Logo"
           width={200}
           height={200}
